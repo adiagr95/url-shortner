@@ -16,10 +16,10 @@ func Database() (*sql.DB, error) {
 
 
 func MongoDatabase() (*mgo.Database, error) {
-	mongo, err := mgo.Dial("mongodb://localhost")
+	mongo, err := mgo.Dial(os.Getenv("MONGO_URL"))
 	if err != nil {
 		return nil, err
 	}
-	mongodb := mongo.DB("url_shortner")
+	mongodb := mongo.DB(os.Getenv("MONGO_DB"))
 	return mongodb, err
 }

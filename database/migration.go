@@ -54,8 +54,8 @@ func CreateMappingTables(db *sql.DB, num int) {
 			fmt.Println("CREATED TABLE Mapping Table")
 		}
 
-		start := ctrl.GetNumberFromCode(ctrl.GetNthCode(((createdTablesCount + i - 1) * 10) + 1))
-		end := ctrl.GetNumberFromCode(ctrl.GetNthCode((createdTablesCount + i) * 10))
+		start := ctrl.GetNumberFromCode(ctrl.GetNthCode(((createdTablesCount + i - 1) * 10000) + 1))
+		end := ctrl.GetNumberFromCode(ctrl.GetNthCode((createdTablesCount + i) * 10000))
 
 		query = fmt.Sprintf("INSERT INTO mapping_master (`start`, `end`, `table_suffix`) VALUES (%f, %f, %d)", start, end, createdTablesCount + i)
 		fmt.Println(query)
