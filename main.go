@@ -3,6 +3,7 @@ package main
 import (
 	"./ctrl"
 	"./database"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -17,6 +18,8 @@ func main() {
 
 
 	app := gin.Default()
+	app.Use(static.Serve("/assets", static.LocalFile("assets", true)))
+
 	db, err := database.Database()
 	if err != nil {
 		panic(err)

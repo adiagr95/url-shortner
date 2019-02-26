@@ -2,3 +2,4 @@ go get -u github.com/gin-gonic/gin
 go get -u github.com/go-sql-driver/mysql
 go get github.com/joho/godotenv
 go get gopkg.in/mgo.v2
+go get github.com/gin-contrib/static

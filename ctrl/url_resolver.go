@@ -2,6 +2,7 @@ package ctrl
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2"
@@ -15,7 +16,7 @@ func ResolveUrl(c *gin.Context)  {
 
 	url, err := GetUrlFromCode(db, code)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error" :string(err.Error())})
+		c.HTML(http.StatusNotFound, "404.html", gin.H{"error" : err.Error()})
 		return
 	}
 
@@ -49,6 +50,10 @@ func GetUrlFromCode(db sql.DB, code string) (string, error) {
 		}
 	}
 
+	if url == "" {
+		return url, errors.New("Invalid Code")
+	}
+
 	return url, nil
 }
 
@@ -66,5 +71,4 @@ func insertUrlFetchInfo(c *gin.Context, mongo *mgo.Database, code string) {
 	data["client_iP"] = clientIP
 	data["code"] = code
 	mongo.C("analytics").Insert(data)
-
 }
