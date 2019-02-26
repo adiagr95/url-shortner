@@ -13,13 +13,13 @@ func ResolveUrl(c *gin.Context)  {
 	db := c.MustGet("db").(sql.DB)
 	mongo := c.MustGet("mongo").(*mgo.Database)
 
-	insertUrlFetchInfo(c, mongo, code)
 	url, err := GetUrlFromCode(db, code)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error" :string(err.Error())})
 		return
 	}
 
+	insertUrlFetchInfo(c, mongo, code)
 	c.HTML(http.StatusOK, "redirect.html" ,gin.H{"url" : url})
 
 }
@@ -62,8 +62,8 @@ func insertUrlFetchInfo(c *gin.Context, mongo *mgo.Database, code string) {
 		}
 	}
 
-	data["RemoteAddr"] = req.RemoteAddr
-	data["RequestURI"] = req.RequestURI
+	clientIP := FromRequest(c.Request)
+	data["client_iP"] = clientIP
 	data["code"] = code
 	mongo.C("analytics").Insert(data)
 
